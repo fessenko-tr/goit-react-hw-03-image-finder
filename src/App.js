@@ -1,10 +1,12 @@
-import "./App.css";
+import s from "./App.module.css";
 import { Component } from "react/cjs/react.production.min";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Searchbar from "./components/Searchbar";
 import ImageGallery from "./components/ImageGallery";
 import Button from "./components/Button";
-import Loading from "./components/Loader/Loader";
+import Loading from "./components/Loader";
 import Modal from "./components/Modal";
 
 import axiosInstance from "./api/pixabay";
@@ -13,7 +15,7 @@ class App extends Component {
   state = {
     userInput: "",
     isLoading: false,
-    pics: null,
+    pics: [],
     page: 1,
     maxPageReached: true,
     isModalOpened: false,
@@ -27,6 +29,7 @@ class App extends Component {
     if (currentPage === prevPage && currentUserInput === prevUserInput) {
       return;
     }
+
     this.setState({ isLoading: true });
 
     try {
@@ -36,8 +39,9 @@ class App extends Component {
         pics: [...current.pics, ...hits],
       }));
       this.isMaxPageReached(hits);
+      window.scrollBy({ top: 200, behavior: "smooth" });
     } catch (error) {
-      console.log("oh no...meow", error);
+      toast.info(error.message);
       this.setState({ maxPageReached: true });
     } finally {
       this.setState({ isLoading: false });
@@ -45,13 +49,15 @@ class App extends Component {
   }
 
   fetchPics = async () => {
+    const { userInput, page } = this.state;
+
     const { data } = await axiosInstance.request({
-      params: { q: this.state.userInput, page: this.state.page },
+      params: { q: userInput, page: page },
     });
     const hits = data.hits;
 
     if (!hits.length) {
-      throw new Error("oppsie nothing is found");
+      throw new Error("No Pictures Found");
     }
 
     return hits;
@@ -89,13 +95,12 @@ class App extends Component {
   render() {
     const { pics, isLoading, isModalOpened, maxPageReached, modalURL } =
       this.state;
-    console.log(pics);
 
     return (
-      <>
+      <div className={s.App}>
         <Searchbar handleFormSubmit={this.handleFormSubmit} />
 
-        {pics && <ImageGallery openModal={this.openModal} picsArray={pics} />}
+        <ImageGallery openModal={this.openModal} picsArray={pics} />
 
         {isLoading && <Loading />}
 
@@ -104,7 +109,8 @@ class App extends Component {
         {isModalOpened && (
           <Modal closeModal={this.closeModal} modalImg={modalURL} />
         )}
-      </>
+        <ToastContainer />
+      </div>
     );
   }
 }

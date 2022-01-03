@@ -1,6 +1,7 @@
 import { Component } from "react/cjs/react.production.min";
 import PropTypes from "prop-types";
 import s from "./Searchbar.module.css";
+import { toast } from "react-toastify";
 
 class Searchbar extends Component {
   state = {
@@ -19,7 +20,7 @@ class Searchbar extends Component {
     e.preventDefault();
 
     if (!userValue.trim()) {
-      return alert("empty line is denied");
+      return toast.info("Query string is empty");
     }
 
     handleFormSubmit(userValue);

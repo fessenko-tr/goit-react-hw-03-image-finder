@@ -7,7 +7,7 @@ function ImageGallery({ picsArray, openModal }) {
     <ImageGalleryItem
       key={el.pageURL}
       imgModal={el.largeImageURL}
-      imgPreview={el.previewURL}
+      imgPreview={el.webformatURL}
       openModal={openModal}
     />
   ));

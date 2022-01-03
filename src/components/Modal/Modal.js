@@ -21,13 +21,13 @@ class Modal extends Component {
   }
 
   render() {
-    const { modal, overlay } = s;
+    const { modal, overlay, modalImage } = s;
     const { closeModal, modalImg } = this.props;
 
     return createPortal(
       <div onClick={closeModal} className={overlay}>
         <div className={modal}>
-          <img src={modalImg} alt="Big Modal Picture" />
+          <img className={modalImage} src={modalImg} alt="Big Modal Pic" />
         </div>
       </div>,
       modalRoot
