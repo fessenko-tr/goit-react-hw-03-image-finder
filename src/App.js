@@ -49,10 +49,10 @@ class App extends Component {
   }
 
   fetchPics = async () => {
-    const { userInput, page } = this.state;
+    const { userInput: q, page } = this.state;
 
     const { data } = await axiosInstance.request({
-      params: { q: userInput, page: page },
+      params: { q, page },
     });
     const hits = data.hits;
 
@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   isMaxPageReached = (response) => {
-    if (response?.length < 3) {
+    if (response?.length < 12) {
       this.setState({ maxPageReached: true });
     } else {
       this.setState({ maxPageReached: false });
