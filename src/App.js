@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   isMaxPageReached = (response) => {
-    if (response?.length < 12) {
+    if (response.length < 12) {
       this.setState({ maxPageReached: true });
     } else {
       this.setState({ maxPageReached: false });
