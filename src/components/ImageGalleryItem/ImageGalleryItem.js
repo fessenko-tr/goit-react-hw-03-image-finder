@@ -2,17 +2,18 @@ import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
 
 function ImageGalleryItem({ imgPreview, imgModal, openModal }) {
+  const { ImageGalleryItem, ImageGalleryItemImage } = s;
   return (
     <li
       onClick={() => {
         openModal(imgModal);
       }}
-      className={s.ImageGalleryItem}
+      className={ImageGalleryItem}
     >
       <img
         src={imgPreview}
         alt="Gallery Item Pic"
-        className={s.ImageGalleryItemImage}
+        className={ImageGalleryItemImage}
       />
     </li>
   );

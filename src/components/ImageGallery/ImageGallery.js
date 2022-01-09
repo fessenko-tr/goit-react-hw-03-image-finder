@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import s from "./ImageGallery.module.css";
 
 function ImageGallery({ picsArray, openModal }) {
+  const { ImageGallery } = s;
+
   const imagesList = picsArray.map((el) => (
     <ImageGalleryItem
       key={el.pageURL}
@@ -11,7 +13,7 @@ function ImageGallery({ picsArray, openModal }) {
       openModal={openModal}
     />
   ));
-  return <ul className={s.ImageGallery}>{imagesList}</ul>;
+  return <ul className={ImageGallery}>{imagesList}</ul>;
 }
 ImageGallery.propTypes = {
   picsArray: PropTypes.arrayOf(PropTypes.object).isRequired,
