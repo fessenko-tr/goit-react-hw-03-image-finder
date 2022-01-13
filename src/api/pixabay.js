@@ -9,4 +9,17 @@ const axiosInstance = axios.create({
   },
 });
 
-export default axiosInstance;
+const fetchPics = async (q, page) => {
+  const { data } = await axiosInstance.request({
+    params: { q, page },
+  });
+  const hits = data.hits;
+
+  if (!hits.length) {
+    throw new Error("No Pictures Found");
+  }
+
+  return hits;
+};
+
+export default fetchPics;

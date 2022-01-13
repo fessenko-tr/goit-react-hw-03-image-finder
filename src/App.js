@@ -9,7 +9,7 @@ import Button from "./components/Button";
 import Loading from "./components/Loader";
 import Modal from "./components/Modal";
 
-import axiosInstance from "./api/pixabay";
+import fetchPics from "./api/pixabay";
 
 class App extends Component {
   state = {
@@ -29,38 +29,27 @@ class App extends Component {
     if (currentPage === prevPage && currentUserInput === prevUserInput) {
       return;
     }
+    this.setPictures();
+  }
+
+  setPictures = async () => {
+    const { userInput: q, page } = this.state;
 
     this.setState({ isLoading: true });
 
     try {
-      const hits = await this.fetchPics();
+      const hits = await fetchPics(q, page);
 
       this.setState((current) => ({
         pics: [...current.pics, ...hits],
       }));
       this.isMaxPageReached(hits);
-      window.scrollBy({ top: 200, behavior: "smooth" });
     } catch (error) {
       toast.info(error.message);
       this.setState({ maxPageReached: true });
     } finally {
       this.setState({ isLoading: false });
     }
-  }
-
-  fetchPics = async () => {
-    const { userInput: q, page } = this.state;
-
-    const { data } = await axiosInstance.request({
-      params: { q, page },
-    });
-    const hits = data.hits;
-
-    if (!hits.length) {
-      throw new Error("No Pictures Found");
-    }
-
-    return hits;
   };
 
   handleFormSubmit = (userInput) => {
